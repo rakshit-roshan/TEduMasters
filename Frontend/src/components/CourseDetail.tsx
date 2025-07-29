@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 
 const NAV_HEIGHT = 64; // px, adjust if your nav is taller
 
+// --- Your courseTopics data remains the same ---
 const courseTopics: Record<string, { title: string; desc: string; img: string; video?: string; topics: { id: string; name: string; content: string; video?: string }[] }> = {
   react101: {
     title: 'React for Beginners',
@@ -91,6 +92,7 @@ const courseTopics: Record<string, { title: string; desc: string; img: string; v
   },
 };
 
+
 export default function CourseDetail() {
   const { courseId } = useParams<{ courseId: string }>();
   const course = courseTopics[courseId || ''];
@@ -101,8 +103,6 @@ export default function CourseDetail() {
     return <div className="p-10 text-center text-2xl text-gray-500">Course not found.</div>;
   }
 
-  // Use topic video if available, else course video
-  const videoUrl = course.topics[selected].video || course.video;
   const bannerVideoUrl = course.video;
 
   return (
@@ -159,55 +159,46 @@ export default function CourseDetail() {
             </button>
           </div>
         </div>
-        {/* Video Slider Drawer */}
-        {sliderOpen && (
-          <>
-            {/* Overlay */}
-            <div
-              className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300"
-              onClick={() => setSliderOpen(false)}
-            />
-            {/* Sliding Panel */}
-            <div
-              className="fixed top-0 left-0 h-full w-full md:w-[600px] bg-white z-50 shadow-2xl transition-transform duration-300"
-              style={{ transform: sliderOpen ? 'translateX(0)' : 'translateX(-100%)', marginTop: NAV_HEIGHT }}
-            >
-              <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200" style={{ height: NAV_HEIGHT }}>
-                <span className="font-bold text-indigo-700 text-lg">Course Video</span>
-                <button
-                  className="text-gray-500 hover:text-indigo-700 text-2xl font-bold focus:outline-none"
-                  onClick={() => setSliderOpen(false)}
-                  aria-label="Close video"
-                >
-                  ×
-                </button>
-              </div>
-              <div className="p-6 pt-2 flex flex-col items-center justify-center h-[calc(100vh-64px)]">
-                <div className="w-full aspect-w-16 aspect-h-9 bg-black rounded-xl overflow-hidden shadow-lg">
-                  <iframe
-                    src={bannerVideoUrl}
-                    title="Course Video"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-72 md:h-96"
-                  />
-                </div>
-              </div>
+
+        {/* Video Slider Drawer - MODIFIED */}
+        <>
+          {/* Overlay */}
+          <div
+            onClick={() => setSliderOpen(false)}
+            className={`fixed inset-0 bg-black z-40 transition-opacity duration-300
+              ${sliderOpen ? 'bg-opacity-50 pointer-events-auto' : 'bg-opacity-0 pointer-events-none'}`}
+          />
+          {/* Sliding Panel */}
+          <div
+            style={{ marginTop: NAV_HEIGHT }}
+            className={`fixed top-0 right-0 h-full w-full md:w-1/2 bg-white z-50 shadow-2xl 
+                        transition-transform duration-500 ease-in-out transform 
+                        ${sliderOpen ? 'translate-x-0' : 'translate-x-full'}`}
+          >
+            <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200" style={{ height: NAV_HEIGHT }}>
+              <span className="font-bold text-indigo-700 text-lg">Course Video</span>
+              <button
+                className="text-gray-500 hover:text-indigo-700 text-2xl font-bold focus:outline-none"
+                onClick={() => setSliderOpen(false)}
+                aria-label="Close video"
+              >
+                ×
+              </button>
             </div>
-          </>
-        )}
-        {/* YouTube Video for topic (if not using slider) */}
-        {/* {videoUrl && (
-          <div className="mb-8 rounded-xl overflow-hidden shadow-lg aspect-w-16 aspect-h-9 bg-black mx-6">
-            <iframe
-              src={videoUrl}
-              title="Course Video"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="w-full h-72 md:h-96"
-            />
+            <div className="p-6 pt-2 flex flex-col items-center justify-center h-[calc(100vh-64px)]">
+              <div className="w-full aspect-w-16 aspect-h-9 bg-black rounded-xl overflow-hidden shadow-lg">
+                <iframe
+                  src={sliderOpen ? bannerVideoUrl : ''}
+                  title="Course Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-72 md:h-96"
+                />
+                _     </div>
+            </div>
           </div>
-        )} */}
+        </>
+
         {/* Content Area */}
         <div className="bg-white rounded-2xl shadow-lg p-10 min-h-[340px] border border-indigo-100 transition-all duration-300 mx-6 mb-10">
           <h3 className="text-2xl md:text-3xl font-bold text-indigo-700 mb-6 tracking-tight">{course.topics[selected].name}</h3>
@@ -218,4 +209,4 @@ export default function CourseDetail() {
       </main>
     </div>
   );
-} 
+}
