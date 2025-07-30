@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Code2, Mail, Lock, Eye, EyeOff, ArrowRight, CheckCircle, 
-  Users, Trophy, Target
+  Users, Trophy, Target, BookOpen
 } from 'lucide-react';
 
 export default function Login() {
@@ -16,17 +16,17 @@ export default function Login() {
   const [statsIndex, setStatsIndex] = useState(0);
 
   const welcomeMessages = [
-    'Welcome back, Developer!',
-    'Ready to code something amazing?',
-    'Your coding journey continues...',
-    'Let\'s build the future together!'
+    'Welcome back to TEduMasters!',
+    'Ready to continue learning?',
+    'Your coding journey awaits...',
+    'Let\'s master programming together!'
   ];
 
   const platformStats = [
-    { label: 'Active Developers', value: '500K+', icon: <Users className="w-5 h-5" /> },
-    { label: 'Code Challenges', value: '10K+', icon: <Trophy className="w-5 h-5" /> },
-    { label: 'Projects Built', value: '2M+', icon: <Code2 className="w-5 h-5" /> },
-    { label: 'Learning Hours', value: '50M+', icon: <Target className="w-5 h-5" /> }
+    { label: 'Active Students', value: '10K+', icon: <Users className="w-5 h-5" /> },
+    { label: 'Course Completions', value: '25K+', icon: <Trophy className="w-5 h-5" /> },
+    { label: 'Interactive Lessons', value: '2.5K+', icon: <BookOpen className="w-5 h-5" /> },
+    { label: 'Learning Hours', value: '1M+', icon: <Target className="w-5 h-5" /> }
   ];
 
   useEffect(() => {
@@ -79,100 +79,109 @@ export default function Login() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      alert(`🎉 Welcome back to DevPlatform!\n\nEmail: ${formData.email}\n\nLet's continue your coding journey!`);
+      alert(`🎉 Welcome back to TEduMasters!\n\nEmail: ${formData.email}\n\nLet's continue your learning journey!`);
     }, 1500);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
-      {/* Animated Background Elements */}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 relative overflow-hidden">
+      {/* Animated Background Elements - matching landing page style */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-40 left-40 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-indigo-400 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-40 left-40 w-80 h-80 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
       </div>
 
       <div className="relative z-10 min-h-screen flex">
         {/* Left Side - Login Form */}
         <div className="w-full lg:w-2/5 flex items-center justify-center p-8">
           <div className="w-full max-w-md">
-            {/* Logo/Brand */}
+            {/* Logo/Brand - matching landing page */}
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl mb-4 shadow-lg">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl mb-4 shadow-lg">
                 <Code2 className="w-8 h-8 text-white" />
               </div>
-              <h1 className="text-3xl font-bold text-white mb-2">DevPlatform</h1>
-              <p className="text-purple-200">{welcomeMessage}</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">TEduMasters</h1>
+              <p className="text-gray-600">{welcomeMessage}</p>
             </div>
 
-            {/* Login Form */}
-            <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl">
-              <h2 className="text-2xl font-bold text-white mb-6 text-center">Sign In to Continue</h2>
+            {/* Login Form - matching landing page glass effect */}
+            <div className="backdrop-blur-sm bg-white/80 rounded-3xl p-8 border border-white/20 shadow-2xl">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Sign In to Continue</h2>
               
               {/* Email Field */}
               <div className="mb-4">
-                <label className="block text-white/80 text-sm font-medium mb-2">Email Address</label>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address
+                </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-white/40" />
+                    <Mail className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
                     type="email"
                     name="email"
-                    placeholder="Enter your email"
+                    id="email"
+                    placeholder="Enter your email address"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className={`w-full pl-10 pr-10 py-3 bg-white/10 border ${errors.email ? 'border-red-400' : 'border-white/30'} rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200`}
+                    className={`w-full pl-10 pr-10 py-3 bg-white/50 backdrop-blur-sm border ${errors.email ? 'border-red-400' : 'border-gray-200'} rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300`}
                   />
                   {!errors.email && formData.email && (
-                    <CheckCircle className="absolute right-3 top-3 w-5 h-5 text-green-400" />
+                    <CheckCircle className="absolute right-3 top-3 w-5 h-5 text-green-500" />
                   )}
                 </div>
-                {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
+                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
               </div>
 
               {/* Password Field */}
               <div className="mb-6">
-                <label className="block text-white/80 text-sm font-medium mb-2">Password</label>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                  Password
+                </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-white/40" />
+                    <Lock className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
                     type={showPassword ? "text" : "password"}
                     name="password"
+                    id="password"
                     placeholder="Enter your password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className={`w-full pl-10 pr-12 py-3 bg-white/10 border ${errors.password ? 'border-red-400' : 'border-white/30'} rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200`}
+                    className={`w-full pl-10 pr-12 py-3 bg-white/50 backdrop-blur-sm border ${errors.password ? 'border-red-400' : 'border-gray-200'} rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3 text-white/60 hover:text-white transition-colors"
+                    className="absolute right-3 top-3 text-gray-500 hover:text-gray-700 transition-colors"
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
-                {errors.password && <p className="text-red-400 text-sm mt-1">{errors.password}</p>}
+                {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
               </div>
 
               {/* Remember me & Forgot password */}
               <div className="flex items-center justify-between mb-6">
                 <label className="flex items-center">
-                  <input type="checkbox" className="form-checkbox h-4 w-4 text-purple-500 bg-white/10 border-white/30 rounded focus:ring-purple-500" />
-                  <span className="ml-2 text-white/80 text-sm">Remember me</span>
+                  <input 
+                    type="checkbox" 
+                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded transition-colors" 
+                  />
+                  <span className="ml-2 text-gray-700 text-sm">Remember me</span>
                 </label>
-                <button className="text-purple-300 hover:text-purple-200 text-sm transition-colors bg-transparent border-none cursor-pointer">
+                <button className="text-indigo-600 hover:text-indigo-700 text-sm transition-colors bg-transparent border-none cursor-pointer font-medium">
                   Forgot password?
                 </button>
               </div>
 
-              {/* Submit Button */}
+              {/* Submit Button - matching landing page style */}
               <button
                 onClick={handleSubmit}
                 disabled={loading || Object.keys(errors).length > 0}
-                className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold py-3 rounded-xl hover:from-purple-600 hover:to-blue-600 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center mb-4"
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center mb-4 shadow-lg"
               >
                 {loading ? (
                   <div className="flex items-center">
@@ -187,8 +196,8 @@ export default function Login() {
                 )}
               </button>
 
-              <p className="text-center text-white/60 text-sm">
-                Don't have an account? <button className="text-purple-300 hover:text-purple-200 transition-colors bg-transparent border-none cursor-pointer">Sign up</button>
+              <p className="text-center text-gray-600 text-sm">
+                Don't have an account? <button className="text-indigo-600 hover:text-indigo-700 transition-colors bg-transparent border-none cursor-pointer font-medium">Create account</button>
               </p>
             </div>
           </div>
@@ -197,27 +206,29 @@ export default function Login() {
         {/* Right Side - Simplified Stats Display */}
         <div className="hidden lg:flex w-3/5 p-8 flex-col items-center justify-center">
           {/* Header */}
-          <div className="text-center mb-8">
-            <h2 className="text-4xl font-bold text-white mb-4">
-              Continue Your <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Coding Journey</span>
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Continue Your <span className="text-indigo-600">Coding Journey</span>
             </h2>
-            <p className="text-xl text-purple-200">Pick up where you left off and keep building amazing things</p>
+            <p className="text-xl text-gray-600">Pick up where you left off and keep mastering new skills</p>
           </div>
 
-          {/* Platform Stats - Simplified Grid */}
+          {/* Platform Stats - Grid matching landing page style */}
           <div className="grid grid-cols-2 gap-6 max-w-lg">
             {platformStats.map((stat, index) => (
               <div
                 key={index}
-                className={`bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20 transition-all duration-500 text-center ${
-                  statsIndex === index ? 'ring-2 ring-purple-500 scale-105' : ''
+                className={`bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-lg transition-all duration-500 text-center hover:shadow-xl ${
+                  statsIndex === index ? 'ring-2 ring-indigo-500 scale-105' : ''
                 }`}
               >
                 <div className="flex justify-center mb-3">
-                  <div className="text-purple-400">{stat.icon}</div>
+                  <div className="bg-indigo-100 w-12 h-12 rounded-lg flex items-center justify-center">
+                    <div className="text-indigo-600">{stat.icon}</div>
+                  </div>
                 </div>
-                <div className="text-3xl font-bold text-white mb-2">{stat.value}</div>
-                <p className="text-white/70 text-sm">{stat.label}</p>
+                <div className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</div>
+                <p className="text-gray-600 text-sm">{stat.label}</p>
               </div>
             ))}
           </div>

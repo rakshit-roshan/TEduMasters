@@ -166,14 +166,14 @@ export default function CourseDetail() {
           <div
             onClick={() => setSliderOpen(false)}
             className={`fixed inset-0 bg-black z-40 transition-opacity duration-300
-              ${sliderOpen ? 'bg-opacity-50 pointer-events-auto' : 'bg-opacity-0 pointer-events-none'}`}
+              ${sliderOpen ? 'bg-opacity-50 pointer-events-auto' : 'bg-opacity-0 pointer-events-none'}`}
           />
           {/* Sliding Panel */}
           <div
             style={{ marginTop: NAV_HEIGHT }}
             className={`fixed top-0 right-0 h-full w-full md:w-1/2 bg-white z-50 shadow-2xl 
-                        transition-transform duration-500 ease-in-out transform 
-                        ${sliderOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                        transition-transform duration-500 ease-in-out transform 
+                        ${sliderOpen ? 'translate-x-0' : 'translate-x-full'}`}
           >
             <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200" style={{ height: NAV_HEIGHT }}>
               <span className="font-bold text-indigo-700 text-lg">Course Video</span>
