@@ -10,6 +10,9 @@ import PrivateRoute from './components/PrivateRoute';
 import BrowseCourses from './components/BrowseCourses';
 import CourseDetail from './components/CourseDetail';
 import MainLayout from './components/MainLayout'; 
+import Dashboard from './components/Dashboard';
+import ContactPage from './components/ContactsPage';
+import AboutPage from './components/AboutPage';
 
 export default function App() {
   return (
@@ -27,6 +30,9 @@ export default function App() {
           <Route path="/logout" element={<Logout />} />
           <Route path="/courses" element={<BrowseCourses />} />
           <Route path="/courses/:courseId" element={<CourseDetail />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
     </ThemeProvider>

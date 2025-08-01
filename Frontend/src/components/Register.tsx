@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Code2, Users, Sparkles, Gauge, LayoutDashboard, Video, Trophy, GraduationCap,
   FileText, Languages, BadgeCheck, MessageSquare, MonitorPlay, Star, ArrowRight,
@@ -281,7 +282,7 @@ export default function Register() {
               </button>
 
               <p className="text-center text-gray-600 text-sm mt-4">
-                Already have an account? <button className="text-indigo-600 hover:text-indigo-700 transition-colors bg-transparent border-none cursor-pointer font-medium">Sign in</button>
+                Already have an account? <Link to="/login" className="text-indigo-600 hover:text-indigo-700 transition-colors bg-transparent border-none cursor-pointer font-medium">Sign in</Link>
               </p>
             </div>
           </div>

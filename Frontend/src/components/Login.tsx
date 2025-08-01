@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Code2, Mail, Lock, Eye, EyeOff, ArrowRight, CheckCircle, 
   Users, Trophy, Target, BookOpen
@@ -197,7 +198,7 @@ export default function Login() {
               </button>
 
               <p className="text-center text-gray-600 text-sm">
-                Don't have an account? <button className="text-indigo-600 hover:text-indigo-700 transition-colors bg-transparent border-none cursor-pointer font-medium">Create account</button>
+                Don't have an account? <Link to="/register" className="text-indigo-600 hover:text-indigo-700 transition-colors bg-transparent border-none cursor-pointer font-medium">Create account</Link>
               </p>
             </div>
           </div>

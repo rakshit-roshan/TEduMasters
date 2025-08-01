@@ -311,7 +311,7 @@
 }
 
 /* FIXED: Ensure body and html don't have overflow issues */
-html, body {
+body {
   overflow-x: hidden;
 }
 
