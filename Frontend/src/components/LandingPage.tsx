@@ -33,7 +33,7 @@ function LandingPage(){
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose TEduMasters?
+              Why Choose {'<DevPlatform/>'}?
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Experience the future of online education with cutting-edge features designed for modern learners.
@@ -117,13 +117,13 @@ function LandingPage(){
               What Our Students Say
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Join thousands of successful learners who transformed their careers with TEduMasters.
+              Join thousands of successful learners who transformed their careers with DevPlatform.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { name: 'Sarah Johnson', role: 'Frontend Developer', company: 'Google', text: 'TEduMasters helped me transition from a non-tech background to a successful developer. The interactive learning approach is incredible!' },
+              { name: 'Sarah Johnson', role: 'Frontend Developer', company: 'Google', text: 'DevPlatform helped me transition from a non-tech background to a successful developer. The interactive learning approach is incredible!' },
               { name: 'Mike Chen', role: 'Data Scientist', company: 'Microsoft', text: 'The AI-powered feedback system is game-changing. I learned more in 3 months here than I did in 2 years of self-study.' },
               { name: 'Emily Rodriguez', role: 'Mobile Developer', company: 'Apple', text: 'The real-time collaboration features and expert instructors made learning so much more engaging and effective.' }
             ].map((testimonial, index) => (
@@ -151,7 +151,7 @@ function LandingPage(){
             Ready to Start Your Learning Journey?
           </h2>
           <p className="text-xl text-indigo-100 mb-8 max-w-2xl mx-auto">
-            Join over 10,000+ students who have already transformed their careers with TEduMasters.
+            Join over 10,000+ students who have already transformed their careers with DevPlatform.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="bg-white text-indigo-600 hover:bg-gray-100 px-8 py-3 rounded-lg text-lg font-semibold transition duration-300">
@@ -169,7 +169,7 @@ function LandingPage(){
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-2xl font-bold text-indigo-400 mb-4">TEduMasters</h3>
+              <h3 className="text-2xl font-bold text-indigo-400 mb-4">DevPlatform</h3>
               <p className="text-gray-400">Empowering learners worldwide with cutting-edge technology education.</p>
             </div>
             <div>
@@ -201,7 +201,7 @@ function LandingPage(){
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 TEduMasters. All rights reserved.</p>
+            <p>&copy; 2024 DevPlatform. All rights reserved.</p>
           </div>
         </div>
       </footer>
