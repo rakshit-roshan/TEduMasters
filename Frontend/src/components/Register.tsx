@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Code2, Users, Sparkles, Gauge, LayoutDashboard, Video, Trophy, GraduationCap,
   FileText, Languages, BadgeCheck, MessageSquare, MonitorPlay, Star, ArrowRight,
-  CheckCircle, Globe, Zap, Target, BookOpen, Award, Cpu, Eye, EyeOff
+  CheckCircle, Globe, Zap, Target, BookOpen, Award, Cpu, Eye, EyeOff, AlertCircle
 } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Register() {
+  const navigate = useNavigate();
+  const { register } = useAuth();
   const [formData, setFormData] = useState({
-    name: '',
+    username: '',
     email: '',
+    fullName: '',
     password: '',
     confirmPassword: ''
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [activeFeature, setActiveFeature] = useState(0);
   const [typingText, setTypingText] = useState('');
+  const [apiError, setApiError] = useState<string>('');
 
   const codeSnippets = [
     'const magic = useAI("optimize");',
@@ -49,20 +54,26 @@ export default function Register() {
     return () => clearInterval(typing);
   }, [activeFeature]);
 
-  const validateField = (name, value) => {
+  const validateField = (name: string, value: string) => {
     const newErrors = { ...errors };
     
     switch (name) {
-      case 'name':
-        if (!value.trim()) newErrors.name = 'Name is required';
-        else if (value.length < 2) newErrors.name = 'Name too short';
-        else delete newErrors.name;
+      case 'username':
+        if (!value.trim()) newErrors.username = 'Username is required';
+        else if (value.length < 3) newErrors.username = 'Username must be at least 3 characters';
+        else if (!/^[a-zA-Z0-9_]+$/.test(value)) newErrors.username = 'Username can only contain letters, numbers, and underscores';
+        else delete newErrors.username;
         break;
       case 'email':
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!value) newErrors.email = 'Email is required';
         else if (!emailRegex.test(value)) newErrors.email = 'Invalid email format';
         else delete newErrors.email;
+        break;
+      case 'fullName':
+        if (!value.trim()) newErrors.fullName = 'Full name is required';
+        else if (value.length < 2) newErrors.fullName = 'Name too short';
+        else delete newErrors.fullName;
         break;
       case 'password':
         if (!value) newErrors.password = 'Password is required';
@@ -87,21 +98,42 @@ export default function Register() {
     validateField(name, value);
   };
 
-  const handleSubmit = (e) => {
-    if (e && e.preventDefault) e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Clear previous API errors
+    setApiError('');
     
     // Validate all fields
     Object.keys(formData).forEach(key => {
-      validateField(key, formData[key]);
+      validateField(key, formData[key as keyof typeof formData]);
     });
     
     if (Object.keys(errors).length > 0) return;
     
     setLoading(true);
-    setTimeout(() => {
+    
+    try {
+      const userData = {
+        username: formData.username,
+        email: formData.email,
+        passwordHash: formData.password, // Backend will hash this
+        fullName: formData.fullName
+      };
+      
+      const success = await register(userData);
+      
+      if (success) {
+        // Navigate to dashboard on successful registration
+        navigate('/dashboard');
+      } else {
+        setApiError('Registration failed. Please try again.');
+      }
+    } catch (error) {
+      setApiError('Registration failed. Please check your connection and try again.');
+    } finally {
       setLoading(false);
-      alert(`🎉 Welcome to TEduMasters!\n\nName: ${formData.name}\nEmail: ${formData.email}\n\nYour coding journey begins now!`);
-    }, 2000);
+    }
   };
 
   const coreFeatures = [
@@ -166,26 +198,48 @@ export default function Register() {
             <div className="backdrop-blur-sm bg-white/80 rounded-3xl p-8 border border-white/20 shadow-2xl">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Create Your Account</h2>
               
-              {/* Name Field */}
+              {/* Username Field */}
               <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+                  Username
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    placeholder="Choose a username"
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 bg-white/50 backdrop-blur-sm border ${errors.username ? 'border-red-400' : 'border-gray-200'} rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300`}
+                  />
+                  {!errors.username && formData.username && (
+                    <CheckCircle className="absolute right-3 top-3 w-5 h-5 text-green-500" />
+                  )}
+                </div>
+                {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
+              </div>
+
+              {/* Full Name Field */}
+              <div className="mb-4">
+                <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
                   Full Name
                 </label>
                 <div className="relative">
                   <input
                     type="text"
-                    name="name"
-                    id="name"
+                    name="fullName"
+                    id="fullName"
                     placeholder="Enter your full name"
-                    value={formData.name}
+                    value={formData.fullName}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-3 bg-white/50 backdrop-blur-sm border ${errors.name ? 'border-red-400' : 'border-gray-200'} rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300`}
+                    className={`w-full px-4 py-3 bg-white/50 backdrop-blur-sm border ${errors.fullName ? 'border-red-400' : 'border-gray-200'} rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300`}
                   />
-                  {!errors.name && formData.name && (
+                  {!errors.fullName && formData.fullName && (
                     <CheckCircle className="absolute right-3 top-3 w-5 h-5 text-green-500" />
                   )}
                 </div>
-                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
               </div>
 
               {/* Email Field */}
@@ -261,6 +315,14 @@ export default function Register() {
                 </div>
                 {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
               </div>
+
+              {/* API Error Display */}
+              {apiError && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center">
+                  <AlertCircle className="w-5 h-5 text-red-500 mr-2" />
+                  <span className="text-red-700 text-sm">{apiError}</span>
+                </div>
+              )}
 
               {/* Submit Button - matching landing page style */}
               <button

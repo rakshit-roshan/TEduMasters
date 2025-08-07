@@ -27,9 +27,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User authenticate(String username, String rawPassword) {
-        return userRepository.findByUsername(username)
-            .filter(user -> passwordEncoder.matches(rawPassword, user.getPasswordHash()))
-            .orElse(null);
+    public boolean authenticate(String username, String password) {
+        User user = userRepository.findByUsername(username).orElse(null);
+        if (user == null) {
+            return false;
+        }
+        return passwordEncoder.matches(password, user.getPasswordHash());
     }
 }

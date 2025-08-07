@@ -1,5 +1,6 @@
 import '../theme.css';
 import { Link } from 'react-router-dom';
+import BackendTest from './BackendTest';
 
 function LandingPage(){
   return (
@@ -23,6 +24,11 @@ function LandingPage(){
               <Link to="/courses" className="border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white px-8 py-3 rounded-lg text-lg font-semibold transition duration-300">
                 Browse Courses
               </Link>
+            </div>
+            
+            {/* Backend Connection Test */}
+            <div className="mt-8">
+              <BackendTest />
             </div>
           </div>
         </div>

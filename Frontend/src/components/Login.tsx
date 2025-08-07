@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Code2, Mail, Lock, Eye, EyeOff, ArrowRight, CheckCircle, 
-  Users, Trophy, Target, BookOpen
+  Users, Trophy, Target, BookOpen, AlertCircle
 } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Login() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: ''
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [welcomeMessage, setWelcomeMessage] = useState('');
   const [statsIndex, setStatsIndex] = useState(0);
+  const [apiError, setApiError] = useState<string>('');
 
   const welcomeMessages = [
     'Welcome back to TEduMasters!',
@@ -41,15 +45,14 @@ export default function Login() {
     setWelcomeMessage(welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)]);
   }, []);
 
-  const validateField = (name, value) => {
+  const validateField = (name: string, value: string) => {
     const newErrors = { ...errors };
     
     switch (name) {
-      case 'email':
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!value) newErrors.email = 'Email is required';
-        else if (!emailRegex.test(value)) newErrors.email = 'Invalid email format';
-        else delete newErrors.email;
+      case 'username':
+        if (!value) newErrors.username = 'Username is required';
+        else if (value.length < 3) newErrors.username = 'Username must be at least 3 characters';
+        else delete newErrors.username;
         break;
       case 'password':
         if (!value) newErrors.password = 'Password is required';
@@ -67,21 +70,35 @@ export default function Login() {
     validateField(name, value);
   };
 
-  const handleSubmit = (e) => {
-    if (e && e.preventDefault) e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Clear previous API errors
+    setApiError('');
     
     // Validate all fields
     Object.keys(formData).forEach(key => {
-      validateField(key, formData[key]);
+      validateField(key, formData[key as keyof typeof formData]);
     });
     
     if (Object.keys(errors).length > 0) return;
     
     setLoading(true);
-    setTimeout(() => {
+    
+    try {
+      const success = await login(formData.username, formData.password);
+      
+      if (success) {
+        // Navigate to dashboard on successful login
+        navigate('/dashboard');
+      } else {
+        setApiError('Invalid username or password. Please try again.');
+      }
+    } catch (error) {
+      setApiError('Login failed. Please check your connection and try again.');
+    } finally {
       setLoading(false);
-      alert(`🎉 Welcome back to TEduMasters!\n\nEmail: ${formData.email}\n\nLet's continue your learning journey!`);
-    }, 1500);
+    }
   };
 
   return (
@@ -110,29 +127,29 @@ export default function Login() {
             <div className="backdrop-blur-sm bg-white/80 rounded-3xl p-8 border border-white/20 shadow-2xl">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Sign In to Continue</h2>
               
-              {/* Email Field */}
+              {/* Username Field */}
               <div className="mb-4">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address
+                <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+                  Username
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <Mail className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="Enter your email address"
-                    value={formData.email}
+                    type="text"
+                    name="username"
+                    id="username"
+                    placeholder="Enter your username"
+                    value={formData.username}
                     onChange={handleInputChange}
-                    className={`w-full pl-10 pr-10 py-3 bg-white/50 backdrop-blur-sm border ${errors.email ? 'border-red-400' : 'border-gray-200'} rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300`}
+                    className={`w-full pl-10 pr-10 py-3 bg-white/50 backdrop-blur-sm border ${errors.username ? 'border-red-400' : 'border-gray-200'} rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300`}
                   />
-                  {!errors.email && formData.email && (
+                  {!errors.username && formData.username && (
                     <CheckCircle className="absolute right-3 top-3 w-5 h-5 text-green-500" />
                   )}
                 </div>
-                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
               </div>
 
               {/* Password Field */}
@@ -163,6 +180,14 @@ export default function Login() {
                 </div>
                 {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
               </div>
+
+              {/* API Error Display */}
+              {apiError && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center">
+                  <AlertCircle className="w-5 h-5 text-red-500 mr-2" />
+                  <span className="text-red-700 text-sm">{apiError}</span>
+                </div>
+              )}
 
               {/* Remember me & Forgot password */}
               <div className="flex items-center justify-between mb-6">

@@ -1,5 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from './ThemeContext';
+import { AuthProvider } from './contexts/AuthContext';
+import { CourseProvider } from './components/CourseService';
 import { Routes, Route } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import Login from './components/Login';
@@ -17,24 +19,28 @@ import AboutPage from './components/AboutPage';
 export default function App() {
   return (
     <ThemeProvider>
-      <Routes>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={
-            <PrivateRoute>
-              <Profile />
-            </PrivateRoute>
-          } />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/courses" element={<BrowseCourses />} />
-          <Route path="/courses/:courseId" element={<CourseDetail />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Route>
-      </Routes>
+      <AuthProvider>
+        <CourseProvider>
+          <Routes>
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/profile" element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              } />
+              <Route path="/logout" element={<Logout />} />
+              <Route path="/courses" element={<BrowseCourses />} />
+              <Route path="/courses/:courseId" element={<CourseDetail />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+            </Route>
+          </Routes>
+        </CourseProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
